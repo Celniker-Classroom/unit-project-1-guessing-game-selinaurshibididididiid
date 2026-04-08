@@ -12,11 +12,14 @@ let fastestTime = null;
 let totalTime = 0;
 let gamesPlayed = 0;
 
+//Beyond
+let winStreak = 0;
+
 //Player Name
 let playerName = prompt("Enter your name:");
 playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1).toLowerCase();
 
-//Date
+//Date function
 function time() {
     let now = new Date();
 
@@ -38,9 +41,10 @@ function time() {
 
     return `${month} ${day}${suffix}, ${year} ${hours}:${minutes}:${seconds}`;
 }
+
 document.getElementById("date").textContent = time();
 
-//live clock
+//clock
 setInterval(function(){
     document.getElementById("date").textContent = time();
 }, 1000);
@@ -58,7 +62,6 @@ document.getElementById("playBtn").addEventListener("click", function(){
 
     rangeValue = range;
 
-    //round setup
     answer = Math.floor(Math.random() * range) + 1;
     guessCount = 0;
     startTime = new Date().getTime();
@@ -75,11 +78,30 @@ document.getElementById("playBtn").addEventListener("click", function(){
     }
 });
 
-//Guess btn
+//key support (BEYOINDD)
+document.getElementById("guess").addEventListener("keypress", function(e){
+    if (e.key === "Enter"){
+        makeGuess();
+    }
+});
+
+//guess btn
 document.getElementById("guessBtn").addEventListener("click", makeGuess);
 
 function makeGuess(){
-    let guess = parseInt(document.getElementById("guess").value);
+    let guessInput = document.getElementById("guess").value;
+    let guess = parseInt(guessInput);
+
+    if (isNaN(guess)){
+        document.getElementById("msg").textContent = playerName + ", please enter a number";
+        return;
+    }
+
+    if (guess < 1 || guess > rangeValue){
+        document.getElementById("msg").textContent = playerName + ", stay within range";
+        return;
+    }
+
     guessCount++;
 
     let msg = "";
@@ -104,41 +126,59 @@ function makeGuess(){
         }
     }
 
-    document.getElementById("msg").textContent = playerName + ", " + msg;
-
+    // win results
     if (guess === answer){
         totalWins++;
         totalGuesses += guessCount;
         scores.push(guessCount);
+        winStreak++;
+
+        let quality = "";
+        if (guessCount <= 2){
+            quality = " Amazing!";
+        } else if (guessCount <= 5){
+            quality = " Good job!";
+        } else {
+            quality = " Keep practicing!";
+        }
+
+        document.getElementById("msg").textContent =
+            playerName + ", correct in " + guessCount + " guesses!" + quality + " Streak: " + winStreak;
 
         updateScore();
         updateTimers(new Date().getTime());
 
         document.getElementById("guessBtn").disabled = true;
         reset();
+        return;
     }
+
+    document.getElementById("msg").textContent = playerName + ", " + msg;
 }
 
-//Give up (alt)
+//give up btn
 document.getElementById("giveUpBtn").addEventListener("click", giveUp);
 
 function giveUp(){
     let score = rangeValue;
 
-    totalWins++;
+    totalWins++; 
     totalGuesses += score;
 
     scores.push(score);
     updateScore();
     updateTimers(new Date().getTime());
 
-    document.getElementById("msg").textContent = playerName + ", you gave up!";
+    winStreak = 0; 
+
+    document.getElementById("msg").textContent = playerName + ", you gave up";
+
     document.getElementById("guessBtn").disabled = true;
 
     reset();
 }
 
-//Scoring
+//scoring update
 function updateScore(){
     document.getElementById("wins").textContent = "Total wins: " + totalWins;
 
@@ -160,7 +200,7 @@ function updateScore(){
     }
 }
 
-//Timers
+//timers
 function updateTimers(endMs){
     let elapsed = (endMs - startTime) / 1000;
 
@@ -175,7 +215,7 @@ function updateTimers(endMs){
     document.getElementById("avgTime").textContent = "Average Time: " + (totalTime / gamesPlayed).toFixed(2);
 }
 
-//Reset btn
+//Reset
 function reset(){
     document.getElementById("giveUpBtn").disabled = true;
     document.getElementById("playBtn").disabled = false;
