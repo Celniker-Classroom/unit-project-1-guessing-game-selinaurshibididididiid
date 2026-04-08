@@ -5,6 +5,14 @@ let totalWins = 0;
 let totalGuesses = 0;
 let scores = [];
 let rangeValue = 3;
+
+//Timers
+let startTime = 0;
+let fastestTime = null;
+let totalTime = 0;
+let gamesPlayed = 0;
+
+//Beyond
 let winStreak = 0;
 
 //Player Name
