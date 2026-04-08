@@ -38,8 +38,9 @@ function time() {
 
     return `${month} ${day}${suffix}, ${year} ${hours}:${minutes}:${seconds}`;
 }
+document.getElementById("date").textContent = time();
 
-//clock
+//live clock
 setInterval(function(){
     document.getElementById("date").textContent = time();
 }, 1000);
@@ -74,7 +75,7 @@ document.getElementById("playBtn").addEventListener("click", function(){
     }
 });
 
-//Guess button
+//Guess btn
 document.getElementById("guessBtn").addEventListener("click", makeGuess);
 
 function makeGuess(){
@@ -118,11 +119,14 @@ function makeGuess(){
     }
 }
 
-//give up (alternative)
+//Give up (alt)
 document.getElementById("giveUpBtn").addEventListener("click", giveUp);
 
 function giveUp(){
     let score = rangeValue;
+
+    totalWins++;
+    totalGuesses += score;
 
     scores.push(score);
     updateScore();
@@ -134,7 +138,7 @@ function giveUp(){
     reset();
 }
 
-//scoring
+//Scoring
 function updateScore(){
     document.getElementById("wins").textContent = "Total wins: " + totalWins;
 
@@ -156,7 +160,7 @@ function updateScore(){
     }
 }
 
-//timers
+//Timers
 function updateTimers(endMs){
     let elapsed = (endMs - startTime) / 1000;
 
@@ -171,7 +175,7 @@ function updateTimers(endMs){
     document.getElementById("avgTime").textContent = "Average Time: " + (totalTime / gamesPlayed).toFixed(2);
 }
 
-//reset
+//Reset btn
 function reset(){
     document.getElementById("giveUpBtn").disabled = true;
     document.getElementById("playBtn").disabled = false;
