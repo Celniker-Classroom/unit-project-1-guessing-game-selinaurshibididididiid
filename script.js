@@ -5,6 +5,7 @@ let totalWins = 0;
 let totalGuesses = 0;
 let scores = [];
 let rangeValue = 3;
+let winStreak = 0;
 
 //Player Name
 let playerName = prompt("Enter your name:");
@@ -66,6 +67,13 @@ document.getElementById("playBtn").addEventListener("click", function(){
     let levelRadios = document.getElementsByName("level");
     for (let i=0; i < levelRadios.length; i++) {
         levelRadios[i].disabled = true; 
+    }
+});
+
+//key support (BEYOINDD)
+document.getElementById("guess").addEventListener("keypress", function(e){
+    if (e.key === "Enter"){
+        makeGuess();
     }
 });
 
