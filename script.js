@@ -6,6 +6,10 @@ let totalGuesses = 0;
 let scores = [];
 let rangeValue = 3;
 
+//Player Name
+let playerName = prompt("Enter your name:");
+playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1).toLowerCase();
+
 //Play
 document.getElementById("playBtn").addEventListener("click", function(){
     let radios = document.getElementsByName("level")
