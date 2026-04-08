@@ -184,6 +184,21 @@ function updateScore(){
     }
 }
 
+//timers
+function updateTimers(endMs){
+    let elapsed = (endMs - startTime) / 1000;
+
+    gamesPlayed++;
+    totalTime += elapsed;
+
+    if (fastestTime === null || elapsed < fastestTime){
+        fastestTime = elapsed;
+    }
+
+    document.getElementById("fastest").textContent = "Fastest Game: " + fastestTime.toFixed(2);
+    document.getElementById("avgTime").textContent = "Average Time: " + (totalTime / gamesPlayed).toFixed(2);
+}
+
 //Reset
 function reset(){
     document.getElementById("giveUpBtn").disabled = true;
